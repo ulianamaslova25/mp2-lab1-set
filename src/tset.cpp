@@ -85,33 +85,14 @@ int TSet::operator!=(const TSet &s) const // сравнение
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    int maxLen = s.BitField.GetLength();
-    int minLen = BitField.GetLength();
-    int flag = 0;
-    if (BitField.GetLength() > s.BitField.GetLength()) {
-        flag = 1;
-    }
-    TSet res(maxLen);
-    for (int i = 0; i < minLen; i++) {
-        if (s.BitField.GetBit(i) == 1 || BitField.GetBit(i) == 1) res.InsElem(i);
-    }
-    if (flag == 0) {
-        for (int i = minLen; i < maxLen; i++) {
-            if (s.BitField.GetBit(i) == 1) res.InsElem(i);
-        }
-    }
-    else {
-        for (int i = minLen; i < maxLen; i++) {
-            if (BitField.GetBit(i) == 1) res.InsElem(i);
-        }
-    }
-    return res;
+    return TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    (*this).InsElem(Elem);
-    return (*this);
+    TSet dop(MaxPower);
+    dop.InsElem(Elem);
+    return TSet(BitField | dop.BitField);
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
@@ -122,42 +103,12 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    int maxLen = s.BitField.GetLength();
-    int minLen = BitField.GetLength();
-    int flag = 0;
-    if (BitField.GetLength() > s.BitField.GetLength()) {
-        flag = 1;
-    }
-    TSet res(maxLen);
-    for (int i = 0; i < minLen; i++) {
-        if (s.BitField.GetBit(i) == 1 && BitField.GetBit(i) == 1) res.InsElem(i);
-    }
-    if (flag == 0) {
-        for (int i = minLen; i < maxLen; i++) {
-            res.DelElem(i);
-        }
-    }
-    else {
-        for (int i = minLen; i < maxLen; i++) {
-            res.DelElem(i);
-        }
-    }
-    return res;
+    return TSet(BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    TSet res(MaxPower);
-    for (int i = 0; i < MaxPower; i++) {
-        if ((*this).BitField.GetBit(i) == 0) res.InsElem(i);
-        //else res.DelElem(i);
-    }
-    return res;
-    //return (*this);
-    //TSet res(~BitField);
-    /*TSet res(MaxPower);
-    res.BitField = ~BitField;
-    return res;*/
+    return TSet(~BitField);
 }
 
 // перегрузка ввода/вывода
