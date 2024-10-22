@@ -243,12 +243,9 @@ TEST(TBitField, can_invert_large_bitfield)
   TBitField bf(size), negBf(size), expNegBf(size);
   bf.SetBit(35);
   negBf = ~bf;
-  cout << bf << endl;
-  cout << negBf << endl;
   for(int i = 0; i < size; i++)
     expNegBf.SetBit(i);
   expNegBf.ClrBit(35);
-  cout << expNegBf << endl;
 
   EXPECT_EQ(expNegBf, negBf);
 }
@@ -345,4 +342,15 @@ TEST(TBitField, bitfields_com_is_eqel)
     b2 = bf2 | bf1;
 
     EXPECT_EQ(b1, b2);
+}
+
+TEST(TBitField, can_char)
+{
+    const int size = 33;
+    TBitField bf(size), expBf(size);
+    bf.SetBit(9);
+    for (int i = 0; i < size; i++) {
+        if (i == 9) EXPECT_EQ(bf.GetBit(i), 1);
+        else EXPECT_EQ(bf.GetBit(i), 0);
+    }
 }
